@@ -29,54 +29,51 @@ public class Game {
     private void playGame() {
         int mode = gameMode();
         if (mode == singlePlayer) {
-            singlePlayer();
+            System.out.println("enter your name: ");
+            String name = scanner.next();
+            game(name, "computer");
         } else if (mode == multiPlayer) {
-            multiPlayer();
+            System.out.println("enter first player's name: ");
+            String player1 = scanner.next();
+            System.out.println("enter second player's name: ");
+            String player2 = scanner.next();
+            game(player1, player2);
         }
-
     }
 
-    public void singlePlayer() {
-        System.out.println("enter your name: ");
-        String name = scanner.next();
-        Player player = new Player(name);
-        AIPlayer aiPlayer = new AIPlayer("Computer");
+    public void game(String player1, String player2) {
+        Player firstPlayer = new Player(player1);
+        Player secondPlayer = !"computer".equalsIgnoreCase(player2) ? new Player(player2) : new AIPlayer(player2);
         Board.setSize();
-        Board playerBoard = new Board();
-        Board computerBoard = new Board();
-        Board playerTrackingBoard = new Board();
-        Board computerTrackingBoard = new Board();
-        playerBoard.placeShips();
-        computerBoard.placeShips();
+        Board player1Board = new Board();
+        Board player2Board = new Board();
+        Board player1TrackingBoard = new Board();
+        Board player2TracingBoard = new Board();
+        player1Board.placeShips();
+        player2Board.placeShips();
         boolean playerTurn = true;
         do {
             if (playerTurn) {
-                playerTrackingBoard.printBoard();
-                String coordinate = player.makeMove();
-                while (!Coordinate.inputValidator(coordinate, playerTrackingBoard)) {
+                player1TrackingBoard.printBoard();
+                String coordinate = firstPlayer.makeMove();
+                while (!Coordinate.inputValidator(coordinate, player1TrackingBoard)) {
                     System.out.println("\u001B[31m" + "Invalid input!" + "\u001B[0m");
-                    coordinate = player.makeMove();
+                    coordinate = firstPlayer.makeMove();
                 }
-                playerTrackingBoard.updateBoard(computerBoard, coordinate);
+                System.out.print("You ");
+                player1TrackingBoard.updateBoard(player2Board, coordinate);
             } else {
-                System.out.println("Computer ");
-                String coordinate = aiPlayer.makeMove();
-                while (!Coordinate.inputValidator(coordinate, computerTrackingBoard)) {
-                    coordinate = aiPlayer.makeMove();
+                player2TracingBoard.printBoard();
+                String coordinate = secondPlayer.makeMove();
+                while (!Coordinate.inputValidator(coordinate, player2TracingBoard)) {
+                    coordinate = secondPlayer.makeMove();
                 }
-                computerTrackingBoard.updateBoard(playerBoard, coordinate);
+                System.out.print(player2.equalsIgnoreCase("computer") ? "computer " : "You ");
+                player2TracingBoard.updateBoard(player1Board, coordinate);
             }
             playerTurn = !playerTurn;
-        } while (!gameOver(playerBoard, computerBoard));
-    }
-
-    public void multiPlayer() {
-        System.out.println("enter first player's name: ");
-        String player1Name = scanner.next();
-        Player player1 = new Player(player1Name);
-        System.out.println("enter second player's name: ");
-        String player2Name = scanner.next();
-        Player player2 = new Player(player2Name);
+        } while (!gameOver(player1Board, player2Board));
+        System.out.println(player1Board.allShipsSunk() ? player2 + " Wins!" : player1 + " Wins!");
     }
 
     public boolean gameOver(Board player1, Board player2) {
