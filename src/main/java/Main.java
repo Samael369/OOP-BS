@@ -6,6 +6,7 @@ public class Main {
             System.out.println("Welcome to the Battle Ship!");
             System.out.println("-".repeat(50));
             Game game = new Game();
+            game.start();
 
 
     }

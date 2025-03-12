@@ -1,10 +1,18 @@
-import java.util.Random;
 import java.util.Scanner;
 
 public class Board {
     Scanner scanner = new Scanner(System.in);
     static int boardSize;
-    char[][] board = new char[boardSize][boardSize];
+    static char ship =  '#';
+    static String water = "\u001B[34m" + '~' + "\u001B[0m";
+    static String miss = "\u001B[31m" +  'O' + "\u001B[0m";
+    static String hit = "\u001B[32m" + 'X' + "\u001B[0m";
+    private char[][] board;
+
+    public Board() {
+        this.board = new char[boardSize][boardSize];
+        initializeGrid();
+    }
 
     public void initializeGrid() {
         for (int i = 0; i < boardSize; i++) {
@@ -14,16 +22,11 @@ public class Board {
         }
     }
 
-    public Board() {
-        this.board = new char[boardSize][boardSize];
-        initializeGrid();
-    }
-
     public char[][] getBoard() {
         return board;
     }
 
-    public void placeShips(){
+    public void placeShips() {
         Ship airCraftCarrier = new Ship(5);
         Ship battleShip = new Ship(4);
         Ship Submarine = new Ship(3);
@@ -50,5 +53,16 @@ public class Board {
             for (int i = row; i < row + size; i++) board[i][col] = '#';
         }
         return true;
+    }
+
+    public void printBoard(Board opponentBoard, String coordinate) {
+        char[][] boardCopy = this.board;
+        char[][] opponentBoardCopy = opponentBoard.getBoard();
+        int row = Coordinate.parseIntRow(coordinate);
+        int col = Coordinate.parseIntCol(coordinate);
+        switch (opponentBoard.getBoard()[row][col]) {
+            case '~':
+                boardCopy[row][col] = 'X';
+        }
     }
 }

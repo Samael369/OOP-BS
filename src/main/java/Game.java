@@ -30,6 +30,8 @@ public class Game {
         int mode = gameMode();
         if (mode == singlePlayer) {
             singlePlayer();
+        }else if (mode == multiPlayer) {
+            multiPlayer();
         }
 
     }
@@ -48,6 +50,18 @@ public class Game {
         Board computerBoard = new Board();
         Board playerTrackingBoard = new Board();
         Board computerTrackingBoard = new Board();
+        playerBoard.placeShips();
+        computerBoard.placeShips();
+        boolean playerTurn = true;
+        do {
+            if (playerTurn) {
+                String coordinate = player.makeMove();
+                while(!Coordinate.inputValidator(coordinate, playerTrackingBoard)) {
+                    System.out.println("Please enter a valid coordinate: ");
+                    coordinate = player.makeMove();
+                }
+            }
+        }while (!gameOver());
     }
 
     public void multiPlayer() {
@@ -57,5 +71,10 @@ public class Game {
         System.out.println("enter second player's name: ");
         String player2Name = scanner.next();
         Player player2 = new Player(player2Name);
+    }
+
+    public boolean gameOver() {
+        //todo
+        return true;
     }
 }
