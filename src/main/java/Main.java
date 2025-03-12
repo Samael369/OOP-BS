@@ -7,7 +7,5 @@ public class Main {
             System.out.println("-".repeat(50));
             Game game = new Game();
             game.start();
-
-
     }
 }

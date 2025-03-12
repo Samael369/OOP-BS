@@ -30,7 +30,7 @@ public class Game {
         int mode = gameMode();
         if (mode == singlePlayer) {
             singlePlayer();
-        }else if (mode == multiPlayer) {
+        } else if (mode == multiPlayer) {
             multiPlayer();
         }
 
@@ -56,12 +56,13 @@ public class Game {
         do {
             if (playerTurn) {
                 String coordinate = player.makeMove();
-                while(!Coordinate.inputValidator(coordinate, playerTrackingBoard)) {
-                    System.out.println("Please enter a valid coordinate: ");
+                while (!Coordinate.inputValidator(coordinate, playerTrackingBoard)) {
+                    System.out.println("\u001B[31m" + "Invalid input!" + "\u001B[0m");
                     coordinate = player.makeMove();
                 }
+                //todo
             }
-        }while (!gameOver());
+        } while (!gameOver());
     }
 
     public void multiPlayer() {

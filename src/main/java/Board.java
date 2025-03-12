@@ -3,10 +3,10 @@ import java.util.Scanner;
 public class Board {
     Scanner scanner = new Scanner(System.in);
     static int boardSize;
-    static char ship =  '#';
-    static String water = "\u001B[34m" + '~' + "\u001B[0m";
-    static String miss = "\u001B[31m" +  'O' + "\u001B[0m";
-    static String hit = "\u001B[32m" + 'X' + "\u001B[0m";
+    final static char SHIP = '#';
+    final static char WATER = '~';
+    final static char MISS = 'O';
+    final static char HIT = 'X';
     private char[][] board;
 
     public Board() {
@@ -55,14 +55,34 @@ public class Board {
         return true;
     }
 
-    public void printBoard(Board opponentBoard, String coordinate) {
-        char[][] boardCopy = this.board;
-        char[][] opponentBoardCopy = opponentBoard.getBoard();
+    public void updateBoard(Board opponentBoard, String coordinate) {
         int row = Coordinate.parseIntRow(coordinate);
         int col = Coordinate.parseIntCol(coordinate);
-        switch (opponentBoard.getBoard()[row][col]) {
-            case '~':
-                boardCopy[row][col] = 'X';
+        char[][] opponentBoardCopy = opponentBoard.getBoard();
+        switch (opponentBoardCopy[row][col]) {
+            case SHIP:
+                this.board[row][col] = HIT;
+                break;
+            case WATER:
+                this.board[row][col] = MISS;
+                break;
+        }
+    }
+
+    public void printBoard() {
+        System.out.println("  ");
+        for (int i = 0; i < boardSize; i++) {
+            System.out.print((char) ('A' + i) + " ");
+        }
+        for (int i = 0; i < boardSize; i++) {
+            System.out.print((char) ('0' + i) + " ");
+            for (int j = 0; j < boardSize; j++) {
+                System.out.print((this.board[i][j] + " "));
+            }
+            System.out.println(" " + (char) ('0' + i));
+        }
+        for (int i = 0; i < boardSize; i++) {
+            System.out.print((char) ('A' + i) + " ");
         }
     }
 }
