@@ -7,11 +7,25 @@ public class Board {
     final static char WATER = '~';
     final static char MISS = 'O';
     final static char HIT = 'X';
+    final static String RED = "\u001B[31m";
+    final static String GREEN = "\u001B[32m";
+    final static String BLUE = "\u001B[34m";
+    final static String RESET = "\u001B[0m";
     private char[][] board;
 
     public Board() {
         this.board = new char[boardSize][boardSize];
         initializeGrid();
+    }
+
+    public static void setSize() {
+        Scanner scanner = new Scanner(System.in);
+        int size = 10;
+        do {
+            System.out.println(size > 5 ? "enter the board size: " : "enter a valid board size: ");
+            size = scanner.nextInt();
+        } while (size < 5);
+        Board.boardSize = size;
     }
 
     public void initializeGrid() {
@@ -61,28 +75,56 @@ public class Board {
         char[][] opponentBoardCopy = opponentBoard.getBoard();
         switch (opponentBoardCopy[row][col]) {
             case SHIP:
+                System.out.println(GREEN + "Hit!" + RESET);
                 this.board[row][col] = HIT;
+                opponentBoardCopy[row][col] = WATER;
                 break;
             case WATER:
+                System.out.println(RED + "Missed!" + RESET);
                 this.board[row][col] = MISS;
                 break;
         }
     }
 
     public void printBoard() {
-        System.out.println("  ");
+        System.out.print("  ");
         for (int i = 0; i < boardSize; i++) {
             System.out.print((char) ('A' + i) + " ");
         }
+        System.out.println();
         for (int i = 0; i < boardSize; i++) {
-            System.out.print((char) ('0' + i) + " ");
+            System.out.print(i);
+            System.out.print(" ");
             for (int j = 0; j < boardSize; j++) {
-                System.out.print((this.board[i][j] + " "));
+                switch (board[i][j]) {
+                    case HIT:
+                        System.out.print(GREEN + HIT + RESET);
+                        System.out.print(" ");
+                        break;
+                    case MISS:
+                        System.out.print(RED + MISS + RESET);
+                        System.out.print(" ");
+                        break;
+                    default:
+                        System.out.print(BLUE + WATER + RESET);
+                        System.out.print(" ");
+                }
             }
-            System.out.println(" " + (char) ('0' + i));
+            System.out.println(i);
         }
+        System.out.print("  ");
         for (int i = 0; i < boardSize; i++) {
             System.out.print((char) ('A' + i) + " ");
         }
+        System.out.println();
+    }
+
+    public boolean allShipsSunk() {
+        for (int i = 0; i < boardSize; i++) {
+            for (int j = 0; j < boardSize; j++) {
+                if (board[i][j] == SHIP) return false;
+            }
+        }
+        return true;
     }
 }

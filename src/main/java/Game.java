@@ -40,12 +40,8 @@ public class Game {
         System.out.println("enter your name: ");
         String name = scanner.next();
         Player player = new Player(name);
-        int size = 10;
-        do {
-            System.out.println(size > 5 ? "enter the board size: " : "enter a valid board size: ");
-            size = scanner.nextInt();
-        } while (size < 5);
-        Board.boardSize = size;
+        AIPlayer aiPlayer = new AIPlayer("Computer");
+        Board.setSize();
         Board playerBoard = new Board();
         Board computerBoard = new Board();
         Board playerTrackingBoard = new Board();
@@ -55,14 +51,23 @@ public class Game {
         boolean playerTurn = true;
         do {
             if (playerTurn) {
+                playerTrackingBoard.printBoard();
                 String coordinate = player.makeMove();
                 while (!Coordinate.inputValidator(coordinate, playerTrackingBoard)) {
                     System.out.println("\u001B[31m" + "Invalid input!" + "\u001B[0m");
                     coordinate = player.makeMove();
                 }
-                //todo
+                playerTrackingBoard.updateBoard(computerBoard, coordinate);
+            } else {
+                System.out.println("Computer ");
+                String coordinate = aiPlayer.makeMove();
+                while (!Coordinate.inputValidator(coordinate, computerTrackingBoard)) {
+                    coordinate = aiPlayer.makeMove();
+                }
+                computerTrackingBoard.updateBoard(playerBoard, coordinate);
             }
-        } while (!gameOver());
+            playerTurn = !playerTurn;
+        } while (!gameOver(playerBoard, computerBoard));
     }
 
     public void multiPlayer() {
@@ -74,8 +79,7 @@ public class Game {
         Player player2 = new Player(player2Name);
     }
 
-    public boolean gameOver() {
-        //todo
-        return true;
+    public boolean gameOver(Board player1, Board player2) {
+        return player1.allShipsSunk() || player2.allShipsSunk();
     }
 }

@@ -28,9 +28,13 @@ public class Coordinate {
 
     public static boolean inputValidator(String coordinate, Board board) {
         int size = Board.boardSize;
-        int row = parseIntRow(coordinate);
-        int col = parseIntCol(coordinate);
-        char[][] grid = board.getBoard();
-        return row >= 0 && col >= 0 && row < size && col < size && grid[row][col]=='~';
+        Pattern pattern = Pattern.compile("([0-9])([a-zA-z])|([a-zA-Z])([0-9])");
+        Matcher matcher = pattern.matcher(coordinate);
+        if (matcher.matches()) {
+            int row = parseIntRow(coordinate);
+            int col = parseIntCol(coordinate);
+            char[][] grid = board.getBoard();
+            return row >= 0 && col >= 0 && row < size && col < size && grid[row][col]=='~';
+        }else return false;
     }
 }
