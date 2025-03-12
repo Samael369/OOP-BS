@@ -1,7 +1,8 @@
 import java.util.Random;
 
 public class Ship {
-    int size;
+    final private int size;
+
 
     public Ship(int size) {
         this.size = size;

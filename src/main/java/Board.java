@@ -1,7 +1,6 @@
 import java.util.Scanner;
 
 public class Board {
-    Scanner scanner = new Scanner(System.in);
     static int boardSize;
     final static char SHIP = '#';
     final static char WATER = '~';
@@ -11,7 +10,7 @@ public class Board {
     final static String GREEN = "\u001B[32m";
     final static String BLUE = "\u001B[34m";
     final static String RESET = "\u001B[0m";
-    private char[][] board;
+    final private char[][] board;
 
     public Board() {
         this.board = new char[boardSize][boardSize];
@@ -59,12 +58,16 @@ public class Board {
             for (int i = col; i < col + size; i++) {
                 if (board[row][i] != '~') return false;
             }
-            for (int i = col; i < col + size; i++) board[row][i] = '#';
+            for (int i = col; i < col + size; i++) {
+                board[row][i] = '#';
+            }
         } else {
             for (int i = row; i < row + size; i++) {
                 if (board[i][col] != '~') return false;
             }
-            for (int i = row; i < row + size; i++) board[i][col] = '#';
+            for (int i = row; i < row + size; i++) {
+                board[i][col] = '#';
+            }
         }
         return true;
     }

@@ -1,11 +1,9 @@
-import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Coordinate {
 
     public static int parseIntRow(String coordinate) {
-        int size = Board.boardSize;
         Pattern pattern = Pattern.compile("([0-9])([a-zA-z])|([a-zA-Z])([0-9])");
         Matcher matcher = pattern.matcher(coordinate);
         if (matcher.matches()) {
@@ -16,7 +14,6 @@ public class Coordinate {
     }
 
     public static int parseIntCol(String coordinate) {
-        int size = Board.boardSize;
         Pattern pattern = Pattern.compile("([0-9])([a-zA-z])|([a-zA-Z])([0-9])");
         Matcher matcher = pattern.matcher(coordinate);
         if (matcher.matches()) {
